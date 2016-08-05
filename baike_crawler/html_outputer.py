@@ -21,7 +21,7 @@ class HtmlOutputer(object):
         fout.write("<th>摘要</th>")
         fout.write("</tr>")
 
-        # ascii
+        # ascii --> utf-8
         for data in self.datas:
             fout.write("<tr>")
             fout.write("<td>%s</td>" % data['url'].encode('utf-8'))
