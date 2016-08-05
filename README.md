@@ -22,3 +22,5 @@ html.parser(python自带) BeautilfulSoup lxml: 结构化解析(DOM树的方式)
 以抓取百度百科为例
 
 入口url：http://baike.baidu.com/view/21087.htm（Python词条）
+
+入口url：http://tinymood.com（个人博客）
