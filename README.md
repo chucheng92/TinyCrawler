@@ -8,7 +8,8 @@
 - 下载器 urllib2 request
 - 解析器 正则表达式 html.parser(python自带) BeautilfulSoup lxml
 
-**区别**
+区别
+----
 
 正则表达式: 模糊匹配
 
@@ -17,7 +18,6 @@ html.parser(python自带) BeautilfulSoup lxml: 结构化解析(DOM树的方式)
 
 本例
 ----
-
 
 以抓取百度百科为例
 
