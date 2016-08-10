@@ -12,9 +12,9 @@ class HtmlOutputer(object):
             return
         self.datas.append(data)
 
-    def save_pics(self):
-        if not os.path.exists("D:/images"):
-            os.mkdir("D:/images")
+    def save_pics(self, outputAddr):
+        if not os.path.exists(outputAddr):
+            os.mkdir(outputAddr)
 
         number = 1
         for urls in self.datas:
@@ -41,7 +41,7 @@ class HtmlOutputer(object):
                     continue
                 name = str(number) + url[index:]
                 response = urllib2.urlopen(url)
-                fout = open("D:/images/" + name, 'wb')
+                fout = open(outputAddr + name, 'wb')
                 print '文件%d写入...稍等' % number
                 fout.write(response.read())
                 fout.flush()

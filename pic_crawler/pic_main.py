@@ -2,25 +2,30 @@
 # Created by hztaoran at 2015/8/5
 # GitHub:Lemonjing
 
+import threading
+
 from pic_crawler import html_downloader
 from pic_crawler import html_outputer
 from pic_crawler import html_parser
 from pic_crawler import url_manager
 
-
 '''
-以http://tinymood.com为例抓取图片并保存在D:/images
+多线程爬虫
 '''
 
 
-class PicMain(object):
-    def __init__(self):
+class PicMain(threading.Thread):
+    def __init__(self, thread_name, root_url, outputAddr):
+        threading.Thread.__init__(self)
         self.urls = url_manager.UrlManager()
         self.downloader = html_downloader.HtmlDownloader()
         self.parser = html_parser.HtmlParser()
         self.outputer = html_outputer.HtmlOutputer()
+        self.name = thread_name
+        self.root_url = root_url
+        self.outputAddr = outputAddr
 
-    def crawl(self, root_url):
+    def crawl(self, root_url, outputAddr):
         count = 1
         self.urls.add_new_url(root_url)
         try:
@@ -32,15 +37,40 @@ class PicMain(object):
                 self.outputer.collect_data(new_data)
                 self.urls.add_new_urls(new_urls)
 
-                if count == 50:
+                if count == 10:
                     break
                 count += 1
         except:
             print 'crawl failed'
+        self.outputer.save_pics(outputAddr)
 
-        self.outputer.save_pics()
+    def run(self):
+        print "Starting " + self.name
+        threadLock.acquire()
+        self.crawl(self.root_url, self.outputAddr)
+        threadLock.release()
+        print "Exiting " + self.name
 
 if __name__ == "__main__":
-    root_url = "http://tinymood.com"
-    obj_crawler = PicMain()
-    obj_crawler.crawl(root_url)
+    root_url1 = "http://tinymood.com"
+    root_url2 = "http://tinymood.com/2016/07/06/spring-aop.html"
+
+    threadLock = threading.Lock()
+    threads = []
+
+    # 创建新线程
+    thread1 = PicMain("Thread-1", root_url1, "D:/images1/")
+    thread2 = PicMain("Thread-2", root_url2, "D:/images2/")
+
+    # 开启线程
+    thread1.start()
+    thread2.start()
+
+    # 添加线程到线程列表
+    threads.append(thread1)
+    threads.append(thread2)
+
+    # 等待所有线程完成
+    for t in threads:
+        t.join()
+    print "Exiting Main Thread"
