@@ -24,7 +24,7 @@ class CrawlerMain(object):
         try:
             while self.urls.has_new_url():
                 new_url = self.urls.get_new_url()
-                print 'craw %d : %s' % (count, new_url)
+                print 'crawl %d : %s' % (count, new_url)
                 html_content = self.downloader.download(new_url)
                 new_urls, new_data = self.parser.parse(new_url, html_content)
                 self.urls.add_new_urls(new_urls)
